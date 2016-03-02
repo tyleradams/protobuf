@@ -1999,7 +1999,8 @@ func (g *Generator) generateMessage(message *Descriptor) {
 			continue
 		}
 		_, wiretype := g.GoType(message, field)
-		tag := "protobuf:" + g.goTag(message, field, wiretype)
+		jsonName := *field.Name
+		tag := fmt.Sprintf("protobuf:%s json:%q", g.goTag(message, field, wiretype), jsonName+",omitempty")
 		g.P("type ", oneofTypeName[field], " struct{ ", fieldNames[field], " ", fieldTypes[field], " `", tag, "` }")
 		g.RecordTypeUse(field.GetTypeName())
 	}
